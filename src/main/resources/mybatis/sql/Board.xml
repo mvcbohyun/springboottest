@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+					    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bhjang.mvc.repository.BoardRepository">
+
+	<select id="getList" parameterType="com.bhjang.mvc.domain.Board" resultType="com.bhjang.mvc.domain.Board">
+	<![CDATA[
+	SELECT
+		B.BOARD_SEQ,
+		B.TITLE,
+		B.CONTENT,
+		B.REG_DATE
+	FROM T_BOARD B
+	ORDER BY B.REG_DATE DESC
+	]]>
+	</select>
+	
+	<select id="get" parameterType="int" resultType="com.bhjang.mvc.domain.Board">
+	<![CDATA[
+	SELECT
+		B.BOARD_SEQ,
+		B.TITLE,
+		B.CONTENT,
+		B.REG_DATE
+	FROM T_BOARD B
+	WHERE B.BOARD_SEQ = #{boardSeq}
+	]]>
+	</select>
+	
+	<insert id="save" parameterType="com.bhjang.mvc.domain.Board" useGeneratedKeys="true" keyProperty="boardSeq">
+	<![CDATA[
+	INSERT INTO T_BOARD
+	(
+		TITLE,
+		CONTENT,
+		REG_DATE
+	)
+	VALUES
+	(
+		#{title},
+		#{content},
+		NOW()
+	)
+		]]>
+	</insert>
+	
+	<update id="update" parameterType="com.bhjang.mvc.domain.Board">
+	<![CDATA[
+	UPDATE T_BOARD
+	SET
+		TITLE = #{title},
+		CONTENT =#{content}
+	WHERE 	BOARD_SEQ = #{boardSeq}
+		]]>
+	</update>
+	<delete id="delete" parameterType="int">
+	<![CDATA[
+	DELETE 
+	FROM T_BOARD
+	WHERE 	BOARD_SEQ = #{boardSeq}
+		]]>
+	</delete>
+</mapper>
