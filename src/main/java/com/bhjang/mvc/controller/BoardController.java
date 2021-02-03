@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bhjang.configuration.http.BaseResponse;
 import com.bhjang.mvc.domain.Board;
 import com.bhjang.mvc.parameter.BoardParameter;
 import com.bhjang.mvc.repository.BoardRepository;
@@ -38,8 +39,8 @@ public class BoardController {
 	 */
 	@GetMapping
 	@ApiOperation(value = "전체조회", notes = "게시판의 전체 조회를 할수 있음")
-	public List<Board> getList(){
-		return boardService.getList();
+	public BaseResponse<List<Board>> getList(){
+		return new BaseResponse<List<Board>>(boardService.getList());
 	}
 	/*
 	 * 상세 정보 리턴
@@ -51,8 +52,8 @@ public class BoardController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name="boardSeq" ,value="게시물 번호",example = "1")
 	})
-	public Board get(@PathVariable int boardSeq) {
-		return boardService.get(boardSeq);
+	public BaseResponse<Board> get(@PathVariable int boardSeq) {
+		return new BaseResponse<Board>(boardService.get(boardSeq));
 	}
 	/*
 	 * 등록/수정 처리
@@ -65,9 +66,9 @@ public class BoardController {
 		@ApiImplicitParam(name="title" ,value="제목",example = "제목입니다"),
 		@ApiImplicitParam(name="content" ,value="내용",example = "내용입니다")
 	})
-	public int save(BoardParameter parameter) {
+	public BaseResponse<Integer> save(BoardParameter parameter) {
 		 boardService.save(parameter);
-		 return parameter.getBoardSeq();
+		 return new BaseResponse<Integer>(parameter.getBoardSeq());
 	}
 	/*
 	 * 삭제
@@ -78,12 +79,12 @@ public class BoardController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name="boardSeq" ,value="게시물 번호",example = "1")
 	})
-	public boolean delete(@PathVariable int boardSeq) {
+	public BaseResponse<Boolean> delete(@PathVariable int boardSeq) {
 		Board board = boardService.get(boardSeq);
 		if(board== null) {
-			return false;
+			return new BaseResponse<Boolean>(false);
 		}
 		boardService.delete(boardSeq);
-		return true;
+		return new BaseResponse<Boolean>(true);
 	}
 }
