@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bhjang.mvc.domain.Board;
+import com.bhjang.mvc.parameter.BoardParameter;
 import com.bhjang.mvc.repository.BoardRepository;
 /*
  * 게시판 서비스
@@ -36,7 +37,7 @@ public class BoardService {
 	 * 등록처리
 	 * @param board
 	 */
-	public void save(Board parameter) {
+	public void save(BoardParameter parameter) {
 		// 조회 하여 리턴된 정보 
 		Board board = repository.get(parameter.getBoardSeq());
 		if(board==null) {
@@ -51,7 +52,7 @@ public class BoardService {
 	 * 업데이트
 	 * @param board
 	 */
-	public  void update(Board board) {
+	public  void update(BoardParameter board) {
 		 repository.update(board);
 	}
 	/*

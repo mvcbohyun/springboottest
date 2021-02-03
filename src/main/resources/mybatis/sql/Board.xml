@@ -27,7 +27,7 @@
 	]]>
 	</select>
 	
-	<insert id="save" parameterType="com.bhjang.mvc.domain.Board" useGeneratedKeys="true" keyProperty="boardSeq">
+	<insert id="save" parameterType="com.bhjang.mvc.parameter.BoardParameter" useGeneratedKeys="true" keyProperty="boardSeq">
 	<![CDATA[
 	INSERT INTO T_BOARD
 	(
@@ -44,7 +44,7 @@
 		]]>
 	</insert>
 	
-	<update id="update" parameterType="com.bhjang.mvc.domain.Board">
+	<update id="update" parameterType="com.bhjang.mvc.parameter.BoardParameter">
 	<![CDATA[
 	UPDATE T_BOARD
 	SET
