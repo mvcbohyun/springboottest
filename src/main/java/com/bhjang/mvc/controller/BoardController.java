@@ -2,8 +2,10 @@ package com.bhjang.mvc.controller;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bhjang.configuration.exception.BaseException;
 import com.bhjang.configuration.http.BaseResponse;
+import com.bhjang.configuration.http.BaseResponseCode;
 import com.bhjang.mvc.domain.Board;
 import com.bhjang.mvc.parameter.BoardParameter;
 import com.bhjang.mvc.repository.BoardRepository;
@@ -53,6 +57,11 @@ public class BoardController {
 		@ApiImplicitParam(name="boardSeq" ,value="게시물 번호",example = "1")
 	})
 	public BaseResponse<Board> get(@PathVariable int boardSeq) {
+		Board board = boardService.get(boardSeq);
+		
+		if(board == null) {
+			throw new BaseException(BaseResponseCode.DATA_IS_NULL, new String[] {"게시물"});
+		}
 		return new BaseResponse<Board>(boardService.get(boardSeq));
 	}
 	/*
@@ -67,6 +76,13 @@ public class BoardController {
 		@ApiImplicitParam(name="content" ,value="내용",example = "내용입니다")
 	})
 	public BaseResponse<Integer> save(BoardParameter parameter) {
+		
+		if(StringUtils.isEmpty(parameter.getTitle())) {
+			throw new BaseException(BaseResponseCode.VALIDATE_REQUIRED, new String[] {"title","제목"});
+		}
+		if(StringUtils.isEmpty(parameter.getContent())) {
+			throw new BaseException(BaseResponseCode.VALIDATE_REQUIRED, new String[] {"contents","내용"});
+		}
 		 boardService.save(parameter);
 		 return new BaseResponse<Integer>(parameter.getBoardSeq());
 	}
