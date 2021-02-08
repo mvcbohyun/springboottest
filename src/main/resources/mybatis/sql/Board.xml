@@ -54,8 +54,8 @@
 	VALUES
 	<foreach collection="boardList" item="board" separator =",">
 	(
-		#{title},
-		#{content},
+		#{board.title},
+		#{board.content},
 		NOW()
 	)
 	</foreach>
