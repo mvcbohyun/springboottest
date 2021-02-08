@@ -44,6 +44,23 @@
 		]]>
 	</insert>
 	
+	<insert id="saveList" parameterType="map" >
+	INSERT INTO T_BOARD
+	(
+		TITLE,
+		CONTENT,
+		REG_DATE
+	)
+	VALUES
+	<foreach collection="boardList" item="board" separator =",">
+	(
+		#{title},
+		#{content},
+		NOW()
+	)
+	</foreach>
+	</insert>
+	
 	<update id="update" parameterType="com.bhjang.mvc.parameter.BoardParameter">
 	<![CDATA[
 	UPDATE T_BOARD

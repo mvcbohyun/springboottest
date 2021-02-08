@@ -1,8 +1,11 @@
 package com.bhjang.mvc.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
-
+import org.apache.commons.lang3.RandomStringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -36,6 +39,7 @@ public class BoardController {
 
 	@Autowired
 	private BoardService boardService;
+	  Logger logger = LoggerFactory.getLogger(getClass());
 	
 	/*
 	 * 목록 리턴
@@ -44,6 +48,7 @@ public class BoardController {
 	@GetMapping
 	@ApiOperation(value = "전체조회", notes = "게시판의 전체 조회를 할수 있음")
 	public BaseResponse<List<Board>> getList(){
+		logger.info("getList");
 		return new BaseResponse<List<Board>>(boardService.getList());
 	}
 	/*
@@ -86,6 +91,60 @@ public class BoardController {
 		 boardService.save(parameter);
 		 return new BaseResponse<Integer>(parameter.getBoardSeq());
 	}
+	
+	/*
+	 * 대용량 등록 처리
+	 */
+	@PutMapping("/saveList1")
+	@ApiOperation(value = "대용량 등록 처리1", notes = "대용량 등록 처리1")
+	public BaseResponse<Boolean> saveList1() {
+		
+		int count =0;
+		// 10000건의 데이터 생성
+		List<BoardParameter> list = new ArrayList<BoardParameter>();
+		while(true) {
+			count++;
+			String title = RandomStringUtils.randomAlphabetic(10);
+			String content = RandomStringUtils.randomAlphabetic(10);
+			list.add(new BoardParameter(title, content));
+			if(count >= 10000) {
+				break;
+			}
+		}
+		// 시간 측정 
+		long start = System.currentTimeMillis();
+		boardService.saveList1(list);
+		long end = System.currentTimeMillis();
+		logger.info("실행 시간 : {}",(end -start)/1000.0);
+		return new BaseResponse<Boolean>(true);
+	}
+	
+	/*
+	 * 대용량 등록 처리
+	 */
+	@PutMapping("/saveList2")
+	@ApiOperation(value = "대용량 등록 처리2", notes = "대용량 등록 처리2")
+	public BaseResponse<Boolean> saveList2() {
+		
+		int count =0;
+		// 10000건의 데이터 생성
+		List<BoardParameter> list = new ArrayList<BoardParameter>();
+		while(true) {
+			count++;
+			String title = RandomStringUtils.randomAlphabetic(10);
+			String content = RandomStringUtils.randomAlphabetic(10);
+			list.add(new BoardParameter(title, content));
+			if(count >= 10000) {
+				break;
+			}
+		}
+		// 시간 측정 
+		long start = System.currentTimeMillis();
+		boardService.saveList2(list);
+		long end = System.currentTimeMillis();
+		logger.info("실행 시간 : {}",(end -start)/1000.0);
+		return new BaseResponse<Boolean>(true);
+	}
 	/*
 	 * 삭제
 	 * @param boardSeq
@@ -103,4 +162,6 @@ public class BoardController {
 		boardService.delete(boardSeq);
 		return new BaseResponse<Boolean>(true);
 	}
+	
+	
 }
