@@ -7,6 +7,7 @@
 	<![CDATA[
 	SELECT
 		B.BOARD_SEQ,
+		B.BOARD_TYPE,
 		B.TITLE,
 		B.CONTENT,
 		B.REG_DATE
@@ -19,6 +20,7 @@
 	<![CDATA[
 	SELECT
 		B.BOARD_SEQ,
+		B.BOARD_TYPE,
 		B.TITLE,
 		B.CONTENT,
 		B.REG_DATE
@@ -31,12 +33,14 @@
 	<![CDATA[
 	INSERT INTO T_BOARD
 	(
+		BOARD_TYPE,
 		TITLE,
 		CONTENT,
 		REG_DATE
 	)
 	VALUES
 	(
+		#{boardType.code},
 		#{title},
 		#{content},
 		NOW()
@@ -65,6 +69,7 @@
 	<![CDATA[
 	UPDATE T_BOARD
 	SET
+		BOARD_TYPE = #{boardType.code},
 		TITLE = #{title},
 		CONTENT =#{content}
 	WHERE 	BOARD_SEQ = #{boardSeq}

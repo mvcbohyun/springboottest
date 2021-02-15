@@ -93,7 +93,7 @@ public class BoardController {
 	}
 	
 	/*
-	 * 대용량 등록 처리
+	 * 대용량 등록 처리1
 	 */
 	@PutMapping("/saveList1")
 	@ApiOperation(value = "대용량 등록 처리1", notes = "대용량 등록 처리1")
@@ -120,7 +120,7 @@ public class BoardController {
 	}
 	
 	/*
-	 * 대용량 등록 처리
+	 * 대용량 등록 처리2  이방법이 훨씬 빠름
 	 */
 	@PutMapping("/saveList2")
 	@ApiOperation(value = "대용량 등록 처리2", notes = "대용량 등록 처리2")
