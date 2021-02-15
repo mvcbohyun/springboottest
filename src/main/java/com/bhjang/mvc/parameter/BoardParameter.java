@@ -8,10 +8,9 @@ import lombok.Data;
 public class BoardParameter {
 	
 	private int boardSeq;
-	private BoardType boardType;
+    private BoardType boardType;
 	private String title;
 	private String content;
-	private String regDate;
 	
 	public BoardParameter() {
 		

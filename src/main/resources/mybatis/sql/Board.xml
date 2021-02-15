@@ -4,7 +4,7 @@
 <mapper namespace="com.bhjang.mvc.repository.BoardRepository">
 
 	<select id="getList" parameterType="com.bhjang.mvc.domain.Board" resultType="com.bhjang.mvc.domain.Board">
-	<![CDATA[
+	
 	SELECT
 		B.BOARD_SEQ,
 		B.BOARD_TYPE,
@@ -12,8 +12,13 @@
 		B.CONTENT,
 		B.REG_DATE
 	FROM T_BOARD B
+	<where>
+		<if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(keyword)">
+		AND b.TITLE LIKE CONCAT('%',#{keyword},'%')
+		</if>
+	</where>
 	ORDER BY B.REG_DATE DESC
-	]]>
+	
 	</select>
 	
 	<select id="get" parameterType="int" resultType="com.bhjang.mvc.domain.Board">

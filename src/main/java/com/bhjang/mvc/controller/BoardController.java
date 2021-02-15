@@ -21,6 +21,7 @@ import com.bhjang.configuration.http.BaseResponse;
 import com.bhjang.configuration.http.BaseResponseCode;
 import com.bhjang.mvc.domain.Board;
 import com.bhjang.mvc.parameter.BoardParameter;
+import com.bhjang.mvc.parameter.BoardSearchParameter;
 import com.bhjang.mvc.repository.BoardRepository;
 import com.bhjang.mvc.service.BoardService;
 
@@ -28,6 +29,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 /*
  * 게시판  컨트롤러
  * @author 장보현
@@ -47,9 +49,9 @@ public class BoardController {
 	 */
 	@GetMapping
 	@ApiOperation(value = "전체조회", notes = "게시판의 전체 조회를 할수 있음")
-	public BaseResponse<List<Board>> getList(){
+	public BaseResponse<List<Board>> getList(@ApiParam BoardSearchParameter parameter){
 		logger.info("getList");
-		return new BaseResponse<List<Board>>(boardService.getList());
+		return new BaseResponse<List<Board>>(boardService.getList(parameter));
 	}
 	/*
 	 * 상세 정보 리턴
