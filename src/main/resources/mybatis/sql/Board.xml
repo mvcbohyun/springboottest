@@ -3,7 +3,7 @@
 					    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bhjang.mvc.repository.BoardRepository">
 
-	<select id="getList" parameterType="com.bhjang.mvc.domain.Board" resultType="com.bhjang.mvc.domain.Board">
+	<select id="getList" parameterType="com.bhjang.mvc.domain.PageRequestParameter" resultType="com.bhjang.mvc.domain.Board">
 	
 	SELECT
 		B.BOARD_SEQ,
@@ -13,18 +13,20 @@
 		B.REG_DATE
 	FROM T_BOARD B
 	<where>
-		<if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(keyword)">
-		AND b.TITLE LIKE CONCAT('%',#{keyword},'%')
+		<if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(parameter.keyword)">
+			AND B.TITLE LIKE CONCAT('%', #{parameter.keyword}, '%')
 		</if>
-		<if test="@org.apache.commons.lang3.ObjectUtils@isNotEmpty(boardTypes)">
+		<!-- 게시판 종류 배열 검색 -->
+		<if test="@org.apache.commons.lang3.ObjectUtils@isNotEmpty(parameter.boardTypes)">
 		AND b.BOARD_TYPE IN(
-			<foreach collection="boardTypes" item="value" separator=",">
-			#{value}
+			<foreach collection="parameter.boardTypes" item="value" separator=",">
+				#{value}
 			</foreach>
 		)
 		</if>
 	</where>
 	ORDER BY B.REG_DATE DESC
+	LIMIT #{pageRequest.limit}, #{pageRequest.offset}
 	
 	</select>
 	

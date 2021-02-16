@@ -7,7 +7,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,9 +19,10 @@ import com.bhjang.configuration.exception.BaseException;
 import com.bhjang.configuration.http.BaseResponse;
 import com.bhjang.configuration.http.BaseResponseCode;
 import com.bhjang.mvc.domain.Board;
+import com.bhjang.mvc.domain.MySQLPageRequest;
+import com.bhjang.mvc.domain.PageRequestParameter;
 import com.bhjang.mvc.parameter.BoardParameter;
 import com.bhjang.mvc.parameter.BoardSearchParameter;
-import com.bhjang.mvc.repository.BoardRepository;
 import com.bhjang.mvc.service.BoardService;
 
 import io.swagger.annotations.Api;
@@ -49,10 +49,14 @@ public class BoardController {
 	 */
 	@GetMapping
 	@ApiOperation(value = "전체조회", notes = "게시판의 전체 조회를 할수 있음")
-	public BaseResponse<List<Board>> getList(@ApiParam BoardSearchParameter parameter){
-		logger.info("getList");
-		return new BaseResponse<List<Board>>(boardService.getList(parameter));
+	public BaseResponse<List<Board>> getList(
+			@ApiParam BoardSearchParameter parameter,
+			@ApiParam MySQLPageRequest pageRequest) {
+		logger.info("pageRequest : {}", pageRequest);
+		PageRequestParameter<BoardSearchParameter> pageRequestParameter = new PageRequestParameter<BoardSearchParameter>(pageRequest, parameter);
+		return new BaseResponse<List<Board>>(boardService.getList(pageRequestParameter));
 	}
+
 	/*
 	 * 상세 정보 리턴
 	 * @param boardSeq
