@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bhjang.configuration.exception.BaseException;
 import com.bhjang.configuration.http.BaseResponse;
 import com.bhjang.configuration.http.BaseResponseCode;
+import com.bhjang.framework.web.bind.annotation.RequestConfig;
 import com.bhjang.mvc.domain.Board;
 import com.bhjang.mvc.domain.MySQLPageRequest;
 import com.bhjang.mvc.domain.PageRequestParameter;
@@ -80,6 +81,7 @@ public class BoardController {
 	 * @param board
 	 */
 	@PutMapping
+	@RequestConfig(loginCheck = true)
 	@ApiOperation(value = "등록/수정 처리", notes = "신규 게시물 저장 및 기존 게시물 업데이트가 가능합니다")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name="boardSeq" ,value="게시물 번호",example = "1"),
@@ -156,6 +158,7 @@ public class BoardController {
 	 * @param boardSeq
 	 */
 	@DeleteMapping("/{boardSeq}")
+	@RequestConfig(loginCheck = false)
 	@ApiOperation(value = "삭제 처리", notes = "해당 게시판 정보를 삭제합니다")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name="boardSeq" ,value="게시물 번호",example = "1")
