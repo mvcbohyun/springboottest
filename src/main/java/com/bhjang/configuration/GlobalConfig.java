@@ -28,6 +28,7 @@ public class GlobalConfig {
 	private ResourceLoader resourceLoader;
 	
 	private String uploadFilePath;
+	private String schedulerCronExample1;
 	
 	private boolean local;
 	
@@ -49,6 +50,7 @@ public class GlobalConfig {
 			Properties loadProperties = PropertiesLoaderUtils.loadProperties(resource);
 			
 			this.uploadFilePath = loadProperties.getProperty("uploadFile.path");
+			this.schedulerCronExample1 = loadProperties.getProperty("scheduler.cron.example1");
 			this.local = activeProfile.equals("local");
 			this.dev = activeProfile.equals("dev");
 			this.prod = activeProfile.equals("prod");
@@ -61,6 +63,11 @@ public class GlobalConfig {
 	public String getUploadFilePath() {
 		
 		return uploadFilePath;
+		
+	}
+	public String getSchedulerCronExample1() {
+		
+		return schedulerCronExample1;
 		
 	}
 	public boolean isLocal() {
@@ -78,6 +85,8 @@ public class GlobalConfig {
 		return prod;
 		
 	}
+
+	
 	
 	
 }
