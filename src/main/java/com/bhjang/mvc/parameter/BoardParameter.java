@@ -11,6 +11,7 @@ public class BoardParameter {
     private BoardType boardType;
 	private String title;
 	private String content;
+	private boolean delYn;
 	
 	public BoardParameter() {
 		

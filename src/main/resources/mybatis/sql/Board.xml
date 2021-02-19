@@ -3,14 +3,19 @@
 					    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bhjang.mvc.repository.BoardRepository">
 
-	<select id="getList" parameterType="com.bhjang.mvc.domain.PageRequestParameter" resultType="com.bhjang.mvc.domain.Board">
+<resultMap type="com.bhjang.mvc.domain.Board" id="getListResultMap">
+	<result column="DEL_YN" property="delYn" typeHandler="com.bhjang.configuration.mybatis.typehandler.StringValueBooleanTypeHandler"/>
+</resultMap>
+
+	<select id="getList" parameterType="com.bhjang.mvc.domain.PageRequestParameter" resultMap="getListResultMap">
 	
 	SELECT
 		B.BOARD_SEQ,
 		B.BOARD_TYPE,
 		B.TITLE,
 		B.CONTENT,
-		B.REG_DATE
+		B.REG_DATE,
+		B.DEL_YN
 	FROM T_BOARD B
 	<where>
 		<if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(parameter.keyword)">
@@ -44,22 +49,24 @@
 	</select>
 	
 	<insert id="save" parameterType="com.bhjang.mvc.parameter.BoardParameter" useGeneratedKeys="true" keyProperty="boardSeq">
-	<![CDATA[
+	
 	INSERT INTO T_BOARD
 	(
 		BOARD_TYPE,
 		TITLE,
 		CONTENT,
-		REG_DATE
+		REG_DATE,
+		DEL_YN
 	)
 	VALUES
 	(
 		#{boardType.code},
 		#{title},
 		#{content},
-		NOW()
+		NOW(),
+		#{delYn, typeHandler=com.bhjang.configuration.mybatis.typehandler.StringValueBooleanTypeHandler}
 	)
-		]]>
+		
 	</insert>
 	
 	<insert id="saveList" parameterType="map" >
