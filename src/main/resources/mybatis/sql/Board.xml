@@ -67,6 +67,7 @@
 		#{delYn, typeHandler=com.bhjang.configuration.mybatis.typehandler.StringValueBooleanTypeHandler}
 	)
 		
+		
 	</insert>
 	
 	<insert id="saveList" parameterType="map" >
