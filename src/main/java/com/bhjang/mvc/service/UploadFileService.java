@@ -3,6 +3,7 @@ package com.bhjang.mvc.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bhjang.mvc.domain.UploadFile;
 import com.bhjang.mvc.parameter.UploadFileParameter;
 import com.bhjang.mvc.repository.UploadFileRepository;
 
@@ -20,5 +21,9 @@ public class UploadFileService {
 		
 		repository.save(parameter);
 		
+	}
+
+	public UploadFile get(int uploadFileSeq) {
+	return	repository.get(uploadFileSeq);
 	}
 }

@@ -2,6 +2,7 @@ package com.bhjang.mvc.repository;
 
 import org.springframework.stereotype.Repository;
 
+import com.bhjang.mvc.domain.UploadFile;
 import com.bhjang.mvc.parameter.UploadFileParameter;
 
 /*
@@ -12,4 +13,6 @@ import com.bhjang.mvc.parameter.UploadFileParameter;
 public interface UploadFileRepository {
 
 	void save(UploadFileParameter parameter);
+
+	UploadFile get(int uploadFileSeq);
 }
