@@ -7,12 +7,15 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bhjang.configuration.exception.BaseException;
@@ -35,7 +38,8 @@ import io.swagger.annotations.ApiParam;
  * 게시판  컨트롤러
  * @author 장보현
  */
-@RestController
+//@RestController  api 서버 일때
+@Controller
 @RequestMapping("/board")
 @Api(tags = "게시판 API")
 public class BoardController {
@@ -76,12 +80,26 @@ public class BoardController {
 		}
 		return new BaseResponse<Board>(boardService.get(boardSeq));
 	}
+	
+	@GetMapping("/form")
+	@RequestConfig(loginCheck = false)
+	public void form(BoardParameter parameter, Model model) {
+		if(parameter.getBoardSeq()>0) {
+			Board board = boardService.get(parameter.getBoardSeq());
+			model.addAttribute("board",board);
+		}
+		
+		model.addAttribute("parameter",parameter);
+		
+	}
+	
 	/*
 	 * 등록/수정 처리
 	 * @param board
 	 */
 	@PutMapping
 	@RequestConfig(loginCheck = false)
+	@ResponseBody
 	@ApiOperation(value = "등록/수정 처리", notes = "신규 게시물 저장 및 기존 게시물 업데이트가 가능합니다")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name="boardSeq" ,value="게시물 번호",example = "1"),
@@ -100,6 +118,30 @@ public class BoardController {
 		 return new BaseResponse<Integer>(parameter.getBoardSeq());
 	}
 	
+//	/*
+//	 * 등록/수정 처리
+//	 * @param board
+//	 */
+//	@PutMapping
+//	@RequestConfig(loginCheck = false)
+//	@ApiOperation(value = "등록/수정 처리", notes = "신규 게시물 저장 및 기존 게시물 업데이트가 가능합니다")
+//	@ApiImplicitParams({
+//		@ApiImplicitParam(name="boardSeq" ,value="게시물 번호",example = "1"),
+//		@ApiImplicitParam(name="title" ,value="제목",example = "제목입니다"),
+//		@ApiImplicitParam(name="content" ,value="내용",example = "내용입니다")
+//	})
+//	public BaseResponse<Integer> save(BoardParameter parameter) {
+//		
+//		if(StringUtils.isEmpty(parameter.getTitle())) {
+//			throw new BaseException(BaseResponseCode.VALIDATE_REQUIRED, new String[] {"title","제목"});
+//		}
+//		if(StringUtils.isEmpty(parameter.getContent())) {
+//			throw new BaseException(BaseResponseCode.VALIDATE_REQUIRED, new String[] {"contents","내용"});
+//		}
+//		 boardService.save(parameter);
+//		 return new BaseResponse<Integer>(parameter.getBoardSeq());
+//	}
+//	
 	/*
 	 * 대용량 등록 처리1
 	 */

@@ -2,7 +2,6 @@ package com.bhjang.mvc.parameter;
 
 
 
-import java.util.List;
 
 import com.bhjang.mvc.domain.BoardType;
 
@@ -13,5 +12,5 @@ public class BoardSearchParameter {
 	
 
 	private String keyword;
-	private List<BoardType> boardTypes;
+	private BoardType[] boardTypes;
 }
