@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -80,7 +81,12 @@ public class BoardController {
 		}
 		return new BaseResponse<Board>(boardService.get(boardSeq));
 	}
-	
+	/*
+	 * 등록/수정 화면
+	 * @param parameter
+	 * @param model
+	 * 
+	 */
 	@GetMapping("/form")
 	@RequestConfig(loginCheck = false)
 	public void form(BoardParameter parameter, Model model) {
@@ -97,7 +103,8 @@ public class BoardController {
 	 * 등록/수정 처리
 	 * @param board
 	 */
-	@PutMapping
+	//@PutMapping
+	@PostMapping("/save")
 	@RequestConfig(loginCheck = false)
 	@ResponseBody
 	@ApiOperation(value = "등록/수정 처리", notes = "신규 게시물 저장 및 기존 게시물 업데이트가 가능합니다")
@@ -112,7 +119,7 @@ public class BoardController {
 			throw new BaseException(BaseResponseCode.VALIDATE_REQUIRED, new String[] {"title","제목"});
 		}
 		if(StringUtils.isEmpty(parameter.getContent())) {
-			throw new BaseException(BaseResponseCode.VALIDATE_REQUIRED, new String[] {"contents","내용"});
+			throw new BaseException(BaseResponseCode.VALIDATE_REQUIRED, new String[] {"content","내용"});
 		}
 		 boardService.save(parameter);
 		 return new BaseResponse<Integer>(parameter.getBoardSeq());

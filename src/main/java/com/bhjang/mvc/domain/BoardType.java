@@ -5,7 +5,8 @@ package com.bhjang.mvc.domain;
  *
  */
 public enum BoardType implements BaseCodeLabelEnum {
-
+	
+	COMMUNITY("커뮤니티"),
 	NOTICE("공지사항"),
 	FAQ("자주묻는 질문"),
 	INQUITY("1:1문의"),
