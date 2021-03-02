@@ -7,6 +7,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -24,6 +25,7 @@ import com.bhjang.configuration.http.BaseResponse;
 import com.bhjang.configuration.http.BaseResponseCode;
 import com.bhjang.framework.web.bind.annotation.RequestConfig;
 import com.bhjang.mvc.domain.Board;
+import com.bhjang.mvc.domain.MenuType;
 import com.bhjang.mvc.domain.MySQLPageRequest;
 import com.bhjang.mvc.domain.PageRequestParameter;
 import com.bhjang.mvc.parameter.BoardParameter;
@@ -41,7 +43,6 @@ import io.swagger.annotations.ApiParam;
  */
 //@RestController  api 서버 일때
 @Controller
-@RequestMapping("/board")
 @Api(tags = "게시판 API")
 public class BoardController {
 
@@ -56,11 +57,12 @@ public class BoardController {
 	@GetMapping("/{menuType}")
 	@ApiOperation(value = "전체조회", notes = "게시판의 전체 조회를 할수 있음")
 	//public BaseResponse<List<Board>> getList(
-	public String  List( BoardSearchParameter parameter,MySQLPageRequest pageRequest, Model model) {
+	public String  List( @PathVariable MenuType menuType,BoardSearchParameter parameter,MySQLPageRequest pageRequest, Model model) {
 		logger.info("pageRequest : {}", pageRequest);
 		PageRequestParameter<BoardSearchParameter> pageRequestParameter = new PageRequestParameter<BoardSearchParameter>(pageRequest, parameter);
 		List<Board> boardList = boardService.getList(pageRequestParameter);
 		model.addAttribute("boardList",boardList);
+		model.addAttribute("menuType",menuType);
 		return "/board/list";
 	}
 
@@ -69,14 +71,15 @@ public class BoardController {
 	 * @param boardSeq
 	 * @return
 	 */
-	@GetMapping("/detail/{boardSeq}")
-	public String detail(@PathVariable int boardSeq,Model model) {
+	@GetMapping("/{menuType}/{boardSeq}")
+	public String detail(@PathVariable MenuType menuType,@PathVariable int boardSeq,Model model) {
 		Board board = boardService.get(boardSeq);
 		
 		if(board == null) {
 			throw new BaseException(BaseResponseCode.DATA_IS_NULL, new String[] {"게시물"});
 		}
 		model.addAttribute("board",board);
+		model.addAttribute("menuType",menuType);
 		return "board/detail";
 	}
 	/*
@@ -85,12 +88,13 @@ public class BoardController {
 	 * @param model
 	 * 
 	 */
-	@GetMapping("/form")
+	@GetMapping("/{menuType}/form")
 	@RequestConfig(loginCheck = false)
-	public void form(BoardParameter parameter, Model model) {
+	public String form(@PathVariable MenuType menuType,BoardParameter parameter, Model model) {
 		
 		model.addAttribute("parameter",parameter);
-		
+		model.addAttribute("menuType",menuType);
+		return "/board/form";
 	}
 	
 	/*
@@ -99,9 +103,9 @@ public class BoardController {
 	 * @param model
 	 * 
 	 */
-	@GetMapping("/edit/{boardSeq}")
+	@GetMapping("/{menuType}/edit/{boardSeq}")
 	@RequestConfig(loginCheck = false)
-	public String edit(@PathVariable(required = true) int boardSeq, BoardParameter parameter, Model model) {
+	public String edit(@PathVariable MenuType menuType,@PathVariable(required = true) int boardSeq, BoardParameter parameter, Model model) {
 		Board board = boardService.get(boardSeq);
 		
 		if(board == null) {
@@ -109,6 +113,7 @@ public class BoardController {
 		}
 		model.addAttribute("board",board);
 		model.addAttribute("parameter",parameter);
+		model.addAttribute("menuType",menuType);
 		return "/board/form";
 	}
 	
@@ -117,7 +122,7 @@ public class BoardController {
 	 * @param board
 	 */
 	//@PutMapping
-	@PostMapping("/save")
+	@PostMapping("/{menuType}/save")
 	@RequestConfig(loginCheck = false)
 	@ResponseBody
 	@ApiOperation(value = "등록/수정 처리", notes = "신규 게시물 저장 및 기존 게시물 업데이트가 가능합니다")
@@ -126,7 +131,7 @@ public class BoardController {
 		@ApiImplicitParam(name="title" ,value="제목",example = "제목입니다"),
 		@ApiImplicitParam(name="content" ,value="내용",example = "내용입니다")
 	})
-	public BaseResponse<Integer> save(BoardParameter parameter) {
+	public BaseResponse<Integer> save(@PathVariable MenuType menuType,BoardParameter parameter) {
 		
 		if(StringUtils.isEmpty(parameter.getTitle())) {
 			throw new BaseException(BaseResponseCode.VALIDATE_REQUIRED, new String[] {"title","제목"});

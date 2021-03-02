@@ -30,7 +30,7 @@
 		)
 		</if>
 	</where>
-	ORDER BY B.REG_DATE DESC
+	ORDER BY B.BOARD_SEQ DESC
 	LIMIT #{pageRequest.limit}, #{pageRequest.offset}
 	
 	</select>
