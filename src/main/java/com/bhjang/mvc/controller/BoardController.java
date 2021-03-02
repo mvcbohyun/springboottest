@@ -53,14 +53,14 @@ public class BoardController {
 	 * 목록 리턴
 	 * @return
 	 */
-	@GetMapping
+	@GetMapping("/list")
 	@ApiOperation(value = "전체조회", notes = "게시판의 전체 조회를 할수 있음")
-	public BaseResponse<List<Board>> getList(
-			@ApiParam BoardSearchParameter parameter,
-			@ApiParam MySQLPageRequest pageRequest) {
+	//public BaseResponse<List<Board>> getList(
+	public void  List( BoardSearchParameter parameter,MySQLPageRequest pageRequest, Model model) {
 		logger.info("pageRequest : {}", pageRequest);
 		PageRequestParameter<BoardSearchParameter> pageRequestParameter = new PageRequestParameter<BoardSearchParameter>(pageRequest, parameter);
-		return new BaseResponse<List<Board>>(boardService.getList(pageRequestParameter));
+		List<Board> boardList = boardService.getList(pageRequestParameter);
+		model.addAttribute("boardList",boardList);
 	}
 
 	/*

@@ -1,5 +1,8 @@
 package com.bhjang.mvc.domain;
 
+
+import java.util.Date;
+
 import lombok.Data;
 
 @Data
@@ -9,6 +12,7 @@ public class Board {
 	private BoardType boardType;
 	private String title;
 	private String content;
-	private String regDate;
+	private int viewCount;
+	private Date regDate;
 	private boolean delYn;
 }
