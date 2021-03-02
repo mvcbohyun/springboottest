@@ -13,7 +13,38 @@
 </head>
 <body>
 	
-	<div class="container">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">bohyun</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/community"><spring:message code="menu.community"></spring:message></a>
+        </li>
+		<li class="nav-item">
+          <a class="nav-link" href="/notice"><spring:message code="menu.notice"></spring:message></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/faq"><spring:message code="menu.faq"></spring:message></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/inquiry"><spring:message code="menu.inquiry"></spring:message></a>
+        </li>
+      </ul>
+      <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+		<h2>글 갯수 : ${totalCount }</h2>
 		<form id = "form" method="get" action="/list">
 		<input type="hidden" name="boardType" value="COMMUNITY">
 		  <div class="row mb-3">
@@ -36,7 +67,7 @@
 		  	<c:forEach var="board" items="${boardList }" varStatus="status">
 		    <tr>
 		      <th scope="row">${status.count}</th>
-		      <td>${board.title}</td>
+		      <td><a href="/board/${board.boardSeq}" >${board.title}</a></td>
 		      <td>${board.viewCount}</td>
 		      <td><fmt:formatDate value="${board.regDate}" pattern="yyyy.MM.dd HH:mm"/> </td>
 		    </tr>
@@ -49,8 +80,11 @@
 		    </c:if>
 		  </tbody>
 	</table>
+		<div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+				  <a href="/board/form" class="btn btn-primary me-md-2" type="button"><spring:message code="button.form"></spring:message></a>
+		</div>
 	  </form>
-  </div>
+
 
 	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 	<script>

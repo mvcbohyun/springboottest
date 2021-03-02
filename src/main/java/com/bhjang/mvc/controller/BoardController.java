@@ -53,14 +53,15 @@ public class BoardController {
 	 * 목록 리턴
 	 * @return
 	 */
-	@GetMapping("/list")
+	@GetMapping("/{menuType}")
 	@ApiOperation(value = "전체조회", notes = "게시판의 전체 조회를 할수 있음")
 	//public BaseResponse<List<Board>> getList(
-	public void  List( BoardSearchParameter parameter,MySQLPageRequest pageRequest, Model model) {
+	public String  List( BoardSearchParameter parameter,MySQLPageRequest pageRequest, Model model) {
 		logger.info("pageRequest : {}", pageRequest);
 		PageRequestParameter<BoardSearchParameter> pageRequestParameter = new PageRequestParameter<BoardSearchParameter>(pageRequest, parameter);
 		List<Board> boardList = boardService.getList(pageRequestParameter);
 		model.addAttribute("boardList",boardList);
+		return "/board/list";
 	}
 
 	/*
@@ -68,21 +69,18 @@ public class BoardController {
 	 * @param boardSeq
 	 * @return
 	 */
-	@GetMapping("/{boardSeq}")
-	@ApiOperation(value = "상세조회", notes = "게시판 번호에 해당하는  상세 정보를 조회를 할수 있음")
-	@ApiImplicitParams({
-		@ApiImplicitParam(name="boardSeq" ,value="게시물 번호",example = "1")
-	})
-	public BaseResponse<Board> get(@PathVariable int boardSeq) {
+	@GetMapping("/detail/{boardSeq}")
+	public String detail(@PathVariable int boardSeq,Model model) {
 		Board board = boardService.get(boardSeq);
 		
 		if(board == null) {
 			throw new BaseException(BaseResponseCode.DATA_IS_NULL, new String[] {"게시물"});
 		}
-		return new BaseResponse<Board>(boardService.get(boardSeq));
+		model.addAttribute("board",board);
+		return "board/detail";
 	}
 	/*
-	 * 등록/수정 화면
+	 * 등록 화면
 	 * @param parameter
 	 * @param model
 	 * 
@@ -90,13 +88,28 @@ public class BoardController {
 	@GetMapping("/form")
 	@RequestConfig(loginCheck = false)
 	public void form(BoardParameter parameter, Model model) {
-		if(parameter.getBoardSeq()>0) {
-			Board board = boardService.get(parameter.getBoardSeq());
-			model.addAttribute("board",board);
-		}
 		
 		model.addAttribute("parameter",parameter);
 		
+	}
+	
+	/*
+	 * 수정 화면
+	 * @param parameter
+	 * @param model
+	 * 
+	 */
+	@GetMapping("/edit/{boardSeq}")
+	@RequestConfig(loginCheck = false)
+	public String edit(@PathVariable(required = true) int boardSeq, BoardParameter parameter, Model model) {
+		Board board = boardService.get(boardSeq);
+		
+		if(board == null) {
+			throw new BaseException(BaseResponseCode.DATA_IS_NULL, new String[] {"게시물"});
+		}
+		model.addAttribute("board",board);
+		model.addAttribute("parameter",parameter);
+		return "/board/form";
 	}
 	
 	/*

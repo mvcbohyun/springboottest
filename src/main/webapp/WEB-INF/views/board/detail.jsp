@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
@@ -12,23 +14,21 @@
 <body>
 	
 	<div class="container">
-		<form id = "form" method="post" action="/save">
-		<input type="hidden" name="boardSeq" value="${board ==null ? 0 :board.boardSeq }">
-		<input type="hidden" name="boardType" value="COMMUNITY">
-		  <div class="row mb-3">
-		    <label for="title" class="col-sm-2 col-form-label"><spring:message code="board.title"></spring:message></label>
-		    <div class="col-sm-10">
-		      <input type="text" class="form-control" name="title" value="${board.title}" id="title" placeholder="<spring:message code="placeholder.required"></spring:message>">
-		    </div>
+		<div class="card">
+		  <div class="card-header">
+		    ${board.title }
 		  </div>
-		  <div class="row mb-3">
-		    <label for="content" class="col-sm-2 col-form-label"><spring:message code="board.content"></spring:message></label>
-		    <div class="col-sm-10">
-		      <textarea class="form-control" id="content" name="content" placeholder="<spring:message code="placeholder.required"></spring:message>">${board.content}</textarea>
-		    </div>
+		  <div class="card-body">
+		    <blockquote class="blockquote mb-0">
+		      <p>${board.content }</p>
+		      <footer class="blockquote-footer"><fmt:formatDate value="${board.regDate}" pattern="yyyy.MM.dd HH:mm"/> </footer>
+		    </blockquote>
 		  </div>
-		  <button type="submit" class="btn btn-primary"><spring:message code="button.save"></spring:message></button>
-	  </form>
+		</div>
+			<div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+			  <a href="/board/list" class="btn btn-primary me-md-2" type="button"><spring:message code="button.list"></spring:message></a>
+			  <a href="/board/edit/${board.boardSeq }" class="btn btn-primary" type="button"><spring:message code="button.edit"></spring:message></a>
+			</div>
   </div>
 
 	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
@@ -43,7 +43,7 @@
 					dataType: 'json',
 					success : function(data){
 						if(data.code == 'SUCCESS'){
-							alert("저장되었습니다.")
+							
 						}else{
 							alert(data.message);
 						}
