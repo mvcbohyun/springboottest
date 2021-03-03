@@ -17,9 +17,18 @@
 		B.REG_DATE,
 		B.DEL_YN
 	FROM T_BOARD B
+	
+	<include refid="getListQuery" />
+	</select>
+	
+	
+	<sql id="getListQuery">
 	<where>
 		<if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(parameter.keyword)">
 			AND B.TITLE LIKE CONCAT('%', #{parameter.keyword}, '%')
+		</if>
+		<if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(parameter.boardType)">
+			AND b.BOARD_TYPE = #{parameter.boardType}
 		</if>
 		<!-- 게시판 종류 배열 검색 -->
 		<if test="@org.apache.commons.lang3.ObjectUtils@isNotEmpty(parameter.boardTypes)">
@@ -32,8 +41,8 @@
 	</where>
 	ORDER BY B.BOARD_SEQ DESC
 	LIMIT #{pageRequest.limit}, #{pageRequest.offset}
-	
-	</select>
+	</sql>
+
 	
 	<select id="get" parameterType="int" resultType="com.bhjang.mvc.domain.Board">
 	<![CDATA[
@@ -60,7 +69,7 @@
 	)
 	VALUES
 	(
-		#{boardType.code},
+		#{boardType},
 		#{title},
 		#{content},
 		NOW(),

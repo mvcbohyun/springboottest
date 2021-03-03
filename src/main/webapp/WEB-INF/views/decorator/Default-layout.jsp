@@ -9,6 +9,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+<style type="text/css">
+ .active{ color : red !important;} 
+ </style>
  <sitemesh:write property="head"/>
 </head>
 <body>
@@ -21,19 +25,19 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link " aria-current="page" href="#">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/community"><spring:message code="menu.community"></spring:message></a>
+          <a class="nav-link ${menuType.name() == 'community' ? 'active' : ''}" href="/community"><spring:message code="menu.community"></spring:message></a>
         </li>
 		<li class="nav-item">
-          <a class="nav-link" href="/notice"><spring:message code="menu.notice"></spring:message></a>
+          <a class="nav-link ${menuType.name() == 'notice' ? 'active' : ''}" href="/notice"><spring:message code="menu.notice"></spring:message></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/faq"><spring:message code="menu.faq"></spring:message></a>
+          <a class="nav-link ${menuType.name() == 'faq' ? 'active' : ''}" href="/faq"><spring:message code="menu.faq"></spring:message></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/inquity"><spring:message code="menu.inquity"></spring:message></a>
+          <a class="nav-link ${menuType.name() == 'inquity' ? 'active' : ''}" href="/inquity"><spring:message code="menu.inquity"></spring:message></a>
         </li>
       </ul>
       <form class="d-flex">
@@ -45,4 +49,5 @@
 </nav>
 <sitemesh:write property="body"/>
 </body>
+
 </html>

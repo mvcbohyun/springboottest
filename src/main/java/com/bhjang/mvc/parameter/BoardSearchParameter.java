@@ -12,5 +12,6 @@ public class BoardSearchParameter {
 	
 
 	private String keyword;
+	private String boardType;
 	private BoardType[] boardTypes;
 }

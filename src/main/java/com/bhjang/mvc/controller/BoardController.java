@@ -58,7 +58,9 @@ public class BoardController {
 	@ApiOperation(value = "전체조회", notes = "게시판의 전체 조회를 할수 있음")
 	//public BaseResponse<List<Board>> getList(
 	public String  List( @PathVariable MenuType menuType,BoardSearchParameter parameter,MySQLPageRequest pageRequest, Model model) {
+		logger.info("menuType : {}", menuType);
 		logger.info("pageRequest : {}", pageRequest);
+		parameter.setBoardType(menuType.boardType.code());
 		PageRequestParameter<BoardSearchParameter> pageRequestParameter = new PageRequestParameter<BoardSearchParameter>(pageRequest, parameter);
 		List<Board> boardList = boardService.getList(pageRequestParameter);
 		model.addAttribute("boardList",boardList);
@@ -133,12 +135,14 @@ public class BoardController {
 	})
 	public BaseResponse<Integer> save(@PathVariable MenuType menuType,BoardParameter parameter) {
 		
+		logger.info("menuType : {}", menuType);
 		if(StringUtils.isEmpty(parameter.getTitle())) {
 			throw new BaseException(BaseResponseCode.VALIDATE_REQUIRED, new String[] {"title","제목"});
 		}
 		if(StringUtils.isEmpty(parameter.getContent())) {
 			throw new BaseException(BaseResponseCode.VALIDATE_REQUIRED, new String[] {"content","내용"});
 		}
+		parameter.setBoardType(menuType.boardType.code());
 		 boardService.save(parameter);
 		 return new BaseResponse<Integer>(parameter.getBoardSeq());
 	}

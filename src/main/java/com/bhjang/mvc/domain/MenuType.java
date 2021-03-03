@@ -12,10 +12,11 @@ public enum MenuType{
 	inquity(BoardType.INQUITY),
 	;
 	
-	private BoardType boardType;
+	public BoardType boardType;
 	
 	MenuType(BoardType boardType) {
 		this.boardType= boardType;
 		
 	}
+	
 }
