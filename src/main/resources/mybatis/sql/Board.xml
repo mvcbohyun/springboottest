@@ -42,6 +42,19 @@
 	ORDER BY B.BOARD_SEQ DESC
 	LIMIT #{pageRequest.limit}, #{pageRequest.offset}
 	</sql>
+	
+	<select id="getListApi" parameterType="com.bhjang.mvc.domain.Board" resultType="com.bhjang.mvc.domain.Board">
+	
+	SELECT
+		B.BOARD_SEQ,
+		B.BOARD_TYPE,
+		B.TITLE,
+		B.CONTENT,
+		B.REG_DATE,
+		B.DEL_YN
+	FROM T_BOARD B
+	
+	</select>
 
 	
 	<select id="get" parameterType="int" resultType="com.bhjang.mvc.domain.Board">

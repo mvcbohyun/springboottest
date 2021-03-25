@@ -30,6 +30,14 @@ public class BoardService {
 		return repository.getList(pageRequestParameter);
 	}
 	/*
+	 * 목록 리턴
+	 * @return
+	 */
+	public List<Board> getListApi() {
+		return repository.getListApi();
+	}
+	
+	/*
 	 * 상세 정보 리턴
 	 * @param boardSeq
 	 * @return

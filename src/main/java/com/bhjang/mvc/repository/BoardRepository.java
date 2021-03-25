@@ -19,6 +19,8 @@ public interface BoardRepository {
 
 	List<Board> getList(PageRequestParameter<BoardSearchParameter> pageRequestParameter);
 	
+	List<Board> getListApi();
+	
 	Board get(int boardSeq);
 	
     void save(BoardParameter board);

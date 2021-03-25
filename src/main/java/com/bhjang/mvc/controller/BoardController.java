@@ -41,8 +41,8 @@ import io.swagger.annotations.ApiParam;
  * 게시판  컨트롤러
  * @author 장보현
  */
-//@RestController  api 서버 일때
-@Controller
+@RestController  
+//@Controller
 @Api(tags = "게시판 API")
 public class BoardController {
 
@@ -66,6 +66,15 @@ public class BoardController {
 		model.addAttribute("boardList",boardList);
 		model.addAttribute("menuType",menuType);
 		return "/board/list";
+	}
+	@GetMapping("/board")
+	@ApiOperation(value = "전체조회", notes = "게시판의 전체 조회를 할수 있음")
+	public BaseResponse<List<Board>> getList(
+			@ApiParam BoardSearchParameter parameter,
+			@ApiParam MySQLPageRequest pageRequest) {
+		logger.info("pageRequest : {}", pageRequest);
+		PageRequestParameter<BoardSearchParameter> pageRequestParameter = new PageRequestParameter<BoardSearchParameter>(pageRequest, parameter);
+		return new BaseResponse<List<Board>>(boardService.getList(pageRequestParameter));
 	}
 
 	/*
